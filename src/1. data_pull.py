@@ -51,3 +51,7 @@ print("\n--- Date Ranges ---")
 for col in df_raw.columns:
     valid = df_raw[col].dropna()
     print(f"{col}: {valid.index[0].date()} → {valid.index[-1].date()}")
+
+os.makedirs('data/raw', exist_ok=True)
+df_raw.to_csv('data/raw/raw_indicators.csv')
+print("Saved to data/raw/raw_indicators.csv")
