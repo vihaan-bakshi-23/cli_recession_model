@@ -20,6 +20,7 @@ normalised = pd.DataFrame(
 # --- 2. optimise lead-lag ---
 MAX_LAG = 18
 optimal_lags = {}
+best_corrs = {}
 
 for col in indicators:
     best_lag = 0
@@ -31,6 +32,7 @@ for col in indicators:
             best_corr = corr
             best_lag = lag
     optimal_lags[col] = best_lag
+    best_corrs[col] = abs(best_corr)
     print(f"{col}: optimal lag = {best_lag} months (corr = {best_corr:.3f})")
 
 # --- 3. optimal lags ---
@@ -44,5 +46,13 @@ cols = [RECESSION_COL] + indicators
 lagged = lagged[cols]
 
 lagged.to_csv("data/processed/normalized_lagged.csv")
-print(f"\nSaved normalizd + lagged data: {lagged.shape}")
+print(f"\nSaved normalized + lagged data: {lagged.shape}")
 print(f"\nNull counts:\n{lagged.isnull().sum()}")
+
+# --- 4. save info on lag + correlations --- 
+lag_df = pd.DataFrame([
+    {"indicator": col, "optimal_lag": optimal_lags[col], "abs_correlation": best_corrs[col]}
+    for col in indicators
+])
+lag_df.to_csv("data/processed/lag_correlations.csv", index=False)
+print("\nSaved lag_correlations.csv")

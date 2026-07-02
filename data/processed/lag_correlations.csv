@@ -1,0 +1,9 @@
+indicator,optimal_lag,abs_correlation
+unemployment_rate,5,0.164414129753157
+housing_starts,1,0.09658438934251679
+consumer_sentiment,1,0.2548293828756934
+industrial_production,7,0.27530813654933695
+jobless_claims,6,0.05640817900576092
+yield_spread,11,0.15643635458869287
+credit_spread,1,0.2951295674320085
+sp500,1,0.15801821283694772
