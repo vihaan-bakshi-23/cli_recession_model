@@ -21,31 +21,45 @@ recessions = [
 # --- 3. Build figure with dual y-axes --- 
 fig = make_subplots(specs=[[{"secondary_y": True}]])
 
-# --- 4. NBER recession shading --- 
-for i, (start, end, label) in enumerate(recessions):
-    fig.add_vrect(
-        x0=start, x1=end,
-        fillcolor="grey",
-        opacity=0.25,
-        layer="below",
-        line_width=0,
-        annotation_text=label,
-        annotation_position="top left",
-        annotation_font_size=10,
+# --- 5. Recession probability (primary y-axis) --- 
+prob_traces = [
+    ("recession_prob_multi",       "Multivariate Model",        "rgba(190, 0, 20, 1.0)",   True),
+    ("recession_prob_cli_equal",   "CLI Equal Weighted",         "rgba(10, 120, 0, 1.0)",   False),
+    ("recession_prob_cli_weighted","CLI Correlation Weighted",   "rgba(10, 0, 120, 1.0)",  False),
+]
+
+for col, name, color, fill in prob_traces:
+    fillcolor = color.replace("1.0", "0.05") if fill else None
+    fig.add_trace(
+        go.Scatter(
+            x=df.index,
+            y=df[col],
+            name=name,
+            line=dict(color=color, width=1.5),
+            fill="tozeroy" if fill else "none",
+            fillcolor=fillcolor,
+            opacity=1.0 if fill else 0.6,
+        ),
+        secondary_y=False,
     )
 
-# --- 5. Recession probability (primary y-axis) --- 
-fig.add_trace(
-    go.Scatter(
-        x=df.index,
-        y=df["recession_prob_multi"],
-        name="Recession Probability",
-        line=dict(color="crimson", width=1.5),
-        fill="tozeroy",
-        fillcolor="rgba(220, 20, 60, 0.15)",
-    ),
-    secondary_y=False,
-)
+# --- 4. NBER recession shading --- 
+for start, end, label in recessions:
+    fig.add_trace(
+        go.Scatter(
+            x=[start, start, end, end, start],
+            y=[0, 1, 1, 0, 0],
+            fill="toself",
+            fillcolor="rgba(00, 00, 00, 0.15)",
+            line=dict(width=0),
+            mode="lines",
+            name=label,
+            showlegend=True,
+            legendgroup="recessions",
+            legendgrouptitle_text="NBER Recessions" if label == "1990–91" else None,
+        ),
+        secondary_y=False,
+    )
 
 # --- 6. Threshold line --- 
 fig.add_hline(
@@ -64,9 +78,9 @@ fig.add_trace(
     go.Scatter(
         x=df.index,
         y=df["cli_equal"],
-        name="CLI (equal weighted)",
-        line=dict(color="steelblue", width=1.2, dash="dot"),
-        opacity=0.7,
+        name="CLI Score",
+        line=dict(color="black", width=1.2, dash="dot"),
+        opacity=0.5,
     ),
     secondary_y=True,
 )
