@@ -44,13 +44,7 @@ def evaluate_cli(df, cli_col, y):
 evaluate_cli(df, "cli_equal", y)
 evaluate_cli(df, "cli_weighted", y)
 
-# --- 4. Save using whichever performs better ---
-# We'll decide after seeing the output — for now save both probability columns
-df.to_csv("data/processed/recession_probabilities.csv")
-print(f"\nSaved recession_probabilities.csv: {df.shape}")
-
-
-# --- 5. All-indicators model ---
+# --- 4. All-indicators model ---
 indicator_cols = [
     "unemployment_rate",
     "housing_starts",
@@ -93,3 +87,11 @@ for threshold in [0.3, 0.4, 0.5]:
     recall    = tp / (tp + fn)
     precision = tp / (tp + fp) if (tp + fp) > 0 else 0
     print(f"  Threshold {threshold} → Recall: {recall:.3f} | Precision: {precision:.3f} | FN: {fn} | FP: {fp}")
+
+prob_multi_series = pd.Series(probs_multi, index=lagged.loc[common_idx].index, name="recession_prob_multi")
+df = df.join(prob_multi_series, how="left")
+
+# --- 5. Save using whichever performs better ---
+# We'll decide after seeing the output — for now save both probability columns
+df.to_csv("data/processed/recession_probabilities.csv")
+print(f"\nSaved recession_probabilities.csv: {df.shape}")

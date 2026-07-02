@@ -1,0 +1,5 @@
+recession_start,first_signal,lead_months,caught
+1990-08-01,1989-12-01,8,True
+2001-04-01,2001-01-01,3,True
+2008-01-01,2006-01-01,24,True
+2020-03-01,2019-02-01,13,True
