@@ -6,6 +6,9 @@ from plotly.subplots import make_subplots
 
 # --- 1. Load data --- 
 df = pd.read_csv("data/processed/recession_probabilities.csv", index_col=0, parse_dates=True)
+wf = pd.read_csv("data/processed/walkforward_probabilities.csv", index_col=0, parse_dates=True)
+df = df.join(wf["recession_prob_walkforward"], how="left")
+
 print(f"Loaded: {df.shape}")
 
 THRESHOLD = 0.4
@@ -23,9 +26,10 @@ fig = make_subplots(specs=[[{"secondary_y": True}]])
 
 # --- 5. Recession probability (primary y-axis) --- 
 prob_traces = [
-    ("recession_prob_multi",       "Multivariate Model",        "rgba(190, 0, 20, 1.0)",   True),
-    ("recession_prob_cli_equal",   "CLI Equal Weighted",         "rgba(10, 120, 0, 1.0)",   False),
-    ("recession_prob_cli_weighted","CLI Correlation Weighted",   "rgba(10, 0, 120, 1.0)",  False),
+    ("recession_prob_multi",        "Multivariate Model",        "rgba(190, 0, 20, 1.0)",   True),
+    ("recession_prob_cli_equal",    "CLI Equal Weighted",        "rgba(10, 120, 0, 1.0)",   False),
+    ("recession_prob_cli_weighted", "CLI Correlation Weighted",  "rgba(250, 75, 250, 1.0)",   False),
+    ("recession_prob_walkforward",  "Walk-Forward (OOS)",        "rgba(10, 0, 120, 1.0)", False)
 ]
 
 for col, name, color, fill in prob_traces:
