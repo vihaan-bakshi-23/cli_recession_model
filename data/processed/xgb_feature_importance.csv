@@ -1,0 +1,9 @@
+feature,importance
+unemployment_rate,0.31983843
+yield_spread,0.18268311
+industrial_production,0.14615168
+credit_spread,0.10302707
+jobless_claims,0.09324417
+consumer_sentiment,0.08680361
+sp500,0.04057265
+housing_starts,0.027679224

@@ -26,7 +26,7 @@ monthly['credit_spread'] = df_raw['credit_spread'].resample('MS').mean()
 monthly['sp500'] = df_raw['sp500'].resample('MS').last()
 
 # --- common/overlapping date range ---
-monthly = monthly.loc['1986-01-01':'2024-12-01']
+monthly = monthly.loc['1986-01-01':]
 
 # --- remaining NaNs ---
 monthly = monthly.ffill(limit=2)

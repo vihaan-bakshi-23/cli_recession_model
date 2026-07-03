@@ -5,6 +5,7 @@ from fredapi import Fred
 import yfinance as yf
 from dotenv import load_dotenv
 import os
+from datetime import datetime
 
 load_dotenv()
 fred = Fred(api_key = os.getenv("FRED_API_KEY"))
@@ -23,7 +24,7 @@ fred_series = {
 
 # --- pull series from FRED ---
 start_date = '1980-01-01'
-end_date   = '2025-01-01'
+end_date   = datetime.today().strftime('%Y-%m-%d')
 
 raw_data = {}
 for code, name in fred_series.items():
