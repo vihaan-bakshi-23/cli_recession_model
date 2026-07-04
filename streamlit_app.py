@@ -19,6 +19,14 @@ latest_date = df.index[-1].strftime("%B %Y")
 
 st.title("US Recession Probability Model")
 st.caption(f"Last updated: {latest_date} · Data refreshed monthly via automated pipeline")
+st.markdown(
+    "Personal project by **Vihaan Bakshi** estimating near-term US recession probability from "
+    "8 macroeconomic indicators (unemployment, housing starts, consumer sentiment, industrial "
+    "production, jobless claims, yield spread, credit spread, S&P 500) using logistic regression, "
+    "validated against NBER recession dates since 1986. Methodology draws on the OECD's Composite "
+    "Leading Indicator framework. "
+    "[View source on GitHub](https://github.com/vihaan-bakshi-23/cli_recession_model)"
+)
 
 # --- Headline metrics ---
 col1, col2 = st.columns(2)
